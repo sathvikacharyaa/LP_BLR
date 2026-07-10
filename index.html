@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Zero — Bengaluru | A Linkin Park Night I Won't Forget</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="shortcut icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<!-- Circular favicon via canvas — crops logo.png into a circle at runtime -->
+<script>
+  (function(){
+    var c=document.createElement('canvas');c.width=64;c.height=64;
+    var ctx=c.getContext('2d');
+    var img=new Image();
+    img.onload=function(){
+      ctx.beginPath();ctx.arc(32,32,32,0,Math.PI*2);ctx.clip();
+      ctx.drawImage(img,0,0,64,64);
+      var link=document.querySelector("link[rel='icon']");
+      if(link)link.href=c.toDataURL('image/png');
+    };
+    img.src='logo.png';
+  })();
+</script>
+<!-- Fonts: preconnect for fast DNS + TLS. Loaded synchronously so the page
+     waits for the font before first paint — no flash, no swap.
+     The body starts invisible (opacity:0) and is revealed by JS once fonts load. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=block">
+<style>
+/* Hide body until fonts confirmed loaded — prevents any flash */
+html.fonts-loading body{ opacity:0; }
+html.fonts-ready body{
+  opacity:1;
+  transition:opacity 0.25s ease;
+}
+/* Fallback: if fonts take >2.5s or fail, reveal anyway */
+html.fonts-timeout body{
+  opacity:1;
+  transition:opacity 0.4s ease;
+}
+</style>
+<script>
+/* Mark loading state immediately */
+document.documentElement.classList.add('fonts-loading');
+/* Use FontFace API to detect when our specific fonts are ready */
+(function(){
+  function reveal(cls){
+    document.documentElement.classList.remove('fonts-loading');
+    document.documentElement.classList.add(cls);
+  }
+  /* Hard timeout — never block for more than 2.5s */
+  var timer = setTimeout(function(){ reveal('fonts-timeout'); }, 2500);
+  if('fonts' in document){
+    Promise.all([
+      document.fonts.load('400 1em Anton'),
+      document.fonts.load('400 1em Barlow'),
+      document.fonts.load('400 1em JetBrains Mono')
+    ]).then(function(){
+      clearTimeout(timer);
+      reveal('fonts-ready');
+    }).catch(function(){
+      clearTimeout(timer);
+      reveal('fonts-timeout');
+    });
+  } else {
+    /* No FontFace API — just reveal on DOMContentLoaded */
+    document.addEventListener('DOMContentLoaded', function(){
+      clearTimeout(timer); reveal('fonts-ready');
+    });
+  }
+})();
+</script>
+<style>
+
+:root{
+  --ash-black:#0b0908;
+  --char:#161210;
+  --char-2:#211a17;
+  --blood:#b81c22;
+  --ember:#ff5a2e;
+  --bone:#ede5da;
+  --smoke:#8f8378;
+  --line:rgba(237,229,218,0.1);
+  --glow: 0 0 40px rgba(255,90,46,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ash-black);
+  color:var(--bone);
+  /* Barlow fallback: system-ui is the closest clean sans on every OS */
+  font-family:'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  overflow-x:hidden;
+  cursor:default;
+}
+::selection{background:var(--blood);color:var(--bone);}
+
+/* grain overlay */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  z-index:999;
+  pointer-events:none;
+  opacity:0.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,h2,h3,.display{
+  /* Anton fallback: Impact on Windows, system-ui condensed elsewhere */
+  font-family:'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.01em;
+  font-weight:400;
+}
+.eyebrow{
+  /* JetBrains Mono fallback: ui-monospace on Apple, Consolas on Windows */
+  font-family:'JetBrains Mono', ui-monospace, 'Consolas', monospace;
+  font-size:0.72rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--ember);
+}
+.container{max-width:1180px;margin:0 auto;padding:0 32px;}
+section{position:relative;}
+
+/* ============ NAV ============ */
+nav{
+  position:fixed; top:0; left:0; right:0;
+  z-index:500;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 32px;
+  mix-blend-mode:difference;
+  transition:padding 0.4s ease;
+}
+.nav-mark{
+  display:flex; align-items:center; gap:10px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.15em;
+}
+.nav-logo{width:36px;height:36px;object-fit:contain;border-radius:2px;filter:drop-shadow(0 0 5px rgba(255,90,46,0.6));}
+.nav-links{display:flex; gap:28px; list-style:none;}
+.nav-links a{
+  color:var(--bone); text-decoration:none;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
+  opacity:0.75; transition:opacity 0.3s;
+  position:relative;
+}
+.nav-links a:hover{opacity:1;}
+.nav-links a::after{
+  content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0;
+  background:var(--bone); transition:width 0.3s ease;
+}
+.nav-links a:hover::after{width:100%;}
+
+/* ---- Hamburger button (mobile only) ---- */
+.nav-burger{
+  display:none;
+  flex-direction:column; justify-content:center; align-items:center;
+  gap:5px;
+  width:40px; height:40px;
+  background:none; border:none; cursor:pointer;
+  padding:4px; z-index:601;
+  position:relative;
+}
+.nav-burger span{
+  display:block; width:22px; height:2px;
+  background:var(--bone);
+  border-radius:2px;
+  transition:transform 0.35s ease, opacity 0.25s ease, width 0.3s ease;
+  transform-origin:center;
+}
+/* open state — top/bottom rotate into X, middle fades */
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0; width:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ---- Mobile drawer ---- */
+.mobile-drawer{
+  display:none;
+  position:fixed; inset:0;
+  z-index:600;
+  background:rgba(11,9,8,0.97);
+  backdrop-filter:blur(12px);
+  flex-direction:column; justify-content:center; align-items:center; gap:0;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.mobile-drawer.open{
+  opacity:1;
+  pointer-events:all;
+}
+.mobile-drawer ul{
+  list-style:none;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  padding:0;
+}
+.mobile-drawer ul li a{
+  display:block;
+  font-family:'Anton','Impact',sans-serif;
+  font-size:clamp(2.2rem,10vw,3.4rem);
+  text-transform:uppercase; letter-spacing:0.04em;
+  color:var(--bone); text-decoration:none;
+  opacity:0.85;
+  transition:color 0.25s, opacity 0.25s;
+  line-height:1.15;
+}
+.mobile-drawer ul li a:hover{color:var(--ember); opacity:1;}
+/* staggered entry animation */
+.mobile-drawer.open ul li{
+  animation:drawerItem 0.4s ease both;
+}
+.mobile-drawer.open ul li:nth-child(1){animation-delay:0.05s;}
+.mobile-drawer.open ul li:nth-child(2){animation-delay:0.10s;}
+.mobile-drawer.open ul li:nth-child(3){animation-delay:0.15s;}
+.mobile-drawer.open ul li:nth-child(4){animation-delay:0.20s;}
+.mobile-drawer.open ul li:nth-child(5){animation-delay:0.25s;}
+@keyframes drawerItem{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+/* small logo inside drawer */
+.drawer-brand{
+  margin-bottom:40px;
+  font-family:'JetBrains Mono',ui-monospace,'Consolas',monospace;
+  font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--ember); opacity:0.7;
+}
+/* close button inside drawer */
+.drawer-close{
+  position:absolute; top:20px; right:20px;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(237,229,218,0.06);
+  border:1px solid rgba(237,229,218,0.15);
+  border-radius:50%;
+  cursor:pointer;
+  transition:background 0.25s, border-color 0.25s, transform 0.25s;
+}
+.drawer-close:hover{
+  background:rgba(237,229,218,0.14);
+  border-color:rgba(237,229,218,0.45);
+  transform:rotate(90deg);
+}
+.drawer-close svg{
+  width:18px; height:18px;
+  stroke:var(--bone); stroke-width:2;
+  fill:none; stroke-linecap:round;
+}
+
+@media(max-width:720px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .mobile-drawer{display:flex;}
+  /* prevent body scroll when drawer is open */
+  body.menu-open{overflow:hidden;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  height:100svh; min-height:640px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  position:relative;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(184,28,34,0.35), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,90,46,0.12), transparent 60%),
+    radial-gradient(ellipse 55% 55% at 50% 44%, rgba(0,0,0,0.92), transparent 72%),
+    var(--ash-black);
+  overflow:hidden;
+}
+.hero-glow{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, transparent 0%, var(--ash-black) 92%);
+  z-index:2;
+  pointer-events:none;
+}
+.tiger-mark{
+  position:absolute;
+  top:50%; left:50%;
+  width:min(70vw,720px);
+  transform:translate(-50%,-58%);
+  z-index:1;
+  animation:markPulse 7s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,1))
+    drop-shadow(0 0 12px rgba(255,255,255,0.75))
+    drop-shadow(0 0 35px rgba(255,90,46,0.7))
+    drop-shadow(0 0 80px rgba(184,28,34,0.45));
+}
+@keyframes markPulse{
+  0%,100%{opacity:0.18; transform:translate(-50%,-58%) scale(1);}
+  50%{opacity:0.38; transform:translate(-50%,-58%) scale(1.03);}
+}
+
+.marquee-row{
+  position:relative; z-index:3;
+  white-space:nowrap;
+  overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:14px 0;
+  background:rgba(11,9,8,0.4);
+  backdrop-filter:blur(2px);
+}
+.marquee-track{
+  display:inline-flex;
+  animation:scrollLeft 52s linear infinite;
+}
+/* 3-step repeating cycle: orange → black-fill (outline only) → white */
+.marquee-track span{
+  font-family:'Anton', sans-serif;
+  font-size:clamp(1.6rem, 5vw, 3.2rem);
+  letter-spacing:0.02em;
+  padding:0 2.2rem;
+  display:inline-block;
+}
+/* 1: orange fill */
+.marquee-track span:nth-child(3n+1){
+  color:var(--ember);
+  -webkit-text-stroke:1px var(--ember);
+}
+/* 2: black fill — outline only using bone stroke */
+.marquee-track span:nth-child(3n+2){
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--bone);
+  opacity:0.7;
+}
+/* 3: white */
+.marquee-track span:nth-child(3n+3){
+  color:#ffffff;
+  -webkit-text-stroke:0px transparent;
+  opacity:0.9;
+}
+@keyframes scrollLeft{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+
+.hero-body{
+  position:relative; z-index:3;
+  padding:64px 32px 0;
+}
+.hero-body .eyebrow{margin-bottom:18px; display:block;}
+.hero-title{
+  font-size:clamp(3.4rem, 11vw, 8.5rem);
+  line-height:0.86;
+  color:var(--bone);
+  text-shadow:0 0 60px rgba(255,90,46,0.25);
+}
+.hero-sub{
+  margin-top:22px;
+  display:flex; flex-wrap:wrap; gap:10px 28px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.85rem; color:var(--smoke); letter-spacing:0.04em;
+}
+.hero-sub b{color:var(--bone); font-weight:500;}
+.scroll-cue{
+  margin:34px 0 0;
+  display:flex; align-items:center; gap:10px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--smoke);
+}
+.scroll-cue .bar{width:1px; height:36px; background:linear-gradient(var(--ember),transparent); animation:cueMove 1.8s ease-in-out infinite;}
+@keyframes cueMove{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+/* ============ SECTION HEADERS ============ */
+.sec-head{margin-bottom:56px; max-width:640px;}
+.sec-head h2{font-size:clamp(2.2rem,5vw,3.6rem); margin-top:12px; line-height:0.95;}
+.sec-head p{color:var(--smoke); margin-top:16px; font-size:1.05rem; line-height:1.6; font-weight:300;}
+
+/* ============ STORY ============ */
+.story{padding:150px 0 120px; position:relative;}
+.story-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px; align-items:start;}
+.story-figure{
+  position:sticky; top:120px;
+  aspect-ratio:2/3;
+  border:1px solid var(--line);
+  background:var(--char);
+  overflow:hidden;
+}
+.story-figure img{
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center center;
+  display:block;
+  transition:transform 0.6s ease;
+}
+.story-figure:hover img{transform:scale(1.04);}
+.story-copy p{
+  font-size:1.15rem; line-height:1.85; font-weight:300; color:var(--bone);
+  margin-bottom:26px; opacity:0.92;
+}
+.story-copy p:first-of-type::first-letter{
+  font-family:'Anton', sans-serif; font-size:4.2rem; float:left; line-height:0.75;
+  padding-right:12px; color:var(--ember);
+}
+.story-copy .cite{
+  font-family:'JetBrains Mono', monospace; font-size:0.75rem; letter-spacing:0.1em;
+  color:var(--smoke); text-transform:uppercase; margin-top:18px;
+}
+@media(max-width:860px){
+  /* handled in main mobile block below */
+}
+
+/* ============ SETLIST ============ */
+.setlist{padding:120px 0; background:var(--char); border-top:1px solid var(--line); border-bottom:1px solid var(--line); position:relative;}
+.setlist::before{
+  content:"";
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 70% 50% at 100% 0%, rgba(184,28,34,0.18), transparent 60%);
+  pointer-events:none;
+}
+.set-list{list-style:none; border-top:1px solid var(--line);}
+.set-item{
+  display:grid; grid-template-columns:60px 1fr auto; align-items:center;
+  gap:20px; padding:20px 4px; border-bottom:1px solid var(--line);
+  transition:background 0.3s ease, padding-left 0.3s ease;
+  position:relative;
+}
+.set-item:hover{background:rgba(255,90,46,0.06); padding-left:16px;}
+.set-num{font-family:'JetBrains Mono', monospace; color:var(--ember); font-size:0.9rem;}
+.set-name{font-family:'Barlow Condensed', sans-serif; font-weight:600; font-size:1.35rem; letter-spacing:0.01em; text-transform:uppercase;}
+.set-tag{font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--smoke); letter-spacing:0.12em; text-transform:uppercase; text-align:right;}
+.set-item.peak .set-name{color:var(--ember);}
+.set-item.peak::before{
+  content:""; position:absolute; left:-32px; top:0; bottom:0; width:3px; background:var(--ember);
+}
+.set-note{margin-top:28px; font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--smoke); letter-spacing:0.04em; line-height:1.7;}
+
+/* Interlude / transition rows — distinct color from act labels and songs */
+.set-item.interlude{
+  grid-template-columns:1fr auto;
+  background:rgba(255,90,46,0.04);
+  padding:11px 12px;
+  border-bottom:1px solid rgba(255,90,46,0.12);
+}
+.set-item.interlude .set-name{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.78rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  font-weight:400;
+  font-style:italic;
+  color:var(--ember);
+  opacity:0.8;
+}
+.set-item.interlude .set-tag{
+  color:var(--ember);
+  opacity:0.55;
+  font-size:0.65rem;
+}
+/* pre-show row */
+.set-item.preshow{
+  grid-template-columns:60px 1fr auto;
+  background:rgba(237,229,218,0.03);
+  border-bottom:1px solid var(--line);
+}
+.set-item.preshow .set-num{ color:var(--smoke); }
+.set-item.preshow .set-name{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.82rem; letter-spacing:0.12em;
+  font-weight:400; font-style:italic;
+  color:var(--smoke); text-transform:uppercase;
+}
+/* solo / special entries */
+.set-item.solo-entry .set-name{
+  font-style:italic; opacity:0.7; font-size:1.05rem;
+}
+
+/* ============ GALLERY ============ */
+.gallery{padding:130px 0;}
+.gal-grid{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-auto-rows:220px;
+  gap:14px;
+}
+.gal-tile{
+  position:relative; overflow:hidden; border:1px solid var(--line);
+  display:flex; align-items:flex-end; padding:16px;
+  cursor:pointer;
+}
+.gal-tile span{
+  font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--bone); position:relative; z-index:2;
+  opacity:0; transform:translateY(6px); transition:all 0.35s ease;
+}
+.gal-tile:hover span{opacity:1; transform:translateY(0);}
+.gal-tile img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  transition:transform 0.6s ease;
+  display:block;
+}
+.gal-tile:hover img{transform:scale(1.06);}
+.gal-tile::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+  z-index:1;
+}
+.gal-credit{
+  position:absolute; top:12px; left:14px; z-index:3;
+  font-family:'JetBrains Mono', 'Courier New', monospace;
+  font-size:0.58rem; letter-spacing:0.08em;
+  color:rgba(237,229,218,0.55);
+  text-transform:none;
+  pointer-events:none;
+}
+/* Layout: 5 images
+   1 — band_mem:  large hero, left  — cols 1-7, rows 1-2
+   2 — em_mike:  top right          — cols 8-12, row 1
+   3 — crowd:    bottom right       — cols 8-12, row 2
+   4 — mike_blue: left bottom       — cols 1-6, rows 3-4
+   5 — WID:      right bottom       — cols 7-12, rows 3-4  */
+.gal-tile:nth-child(1){grid-column: 1 / span 7;  grid-row: 1 / span 2;}
+.gal-tile:nth-child(2){grid-column: 8 / span 5;  grid-row: 1 / span 1;}
+.gal-tile:nth-child(3){grid-column: 8 / span 5;  grid-row: 2 / span 1;}
+.gal-tile:nth-child(4){grid-column: 1 / span 6;  grid-row: 3 / span 2;}
+.gal-tile:nth-child(5){grid-column: 7 / span 6;  grid-row: 3 / span 2;}
+/* keep subjects visible */
+.gal-tile:nth-child(4) img{ object-position: center 55%; }
+.gal-tile:nth-child(5) img{ object-position: center 60%; }
+
+@media(max-width:900px){
+  /* gallery handled in main mobile/tablet blocks below */
+}
+
+/* ============ MEMORIES ============ */
+.memories{padding:130px 0; background:var(--char); border-top:1px solid var(--line);}
+.mem-wall{columns:3 260px; column-gap:20px;}
+.mem-card{
+  break-inside:avoid; margin-bottom:20px; padding:26px 22px;
+  border:1px solid var(--line); background:var(--char-2);
+  position:relative; transition:transform 0.3s ease, border-color 0.3s ease;
+}
+.mem-card:hover{transform:translateY(-4px); border-color:rgba(255,90,46,0.4);}
+.mem-card .mtime{font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--ember); letter-spacing:0.14em;}
+.mem-card p{margin-top:12px; font-size:1rem; line-height:1.65; font-weight:300; color:var(--bone); opacity:0.9;}
+
+/* ============ WHY IT MATTERS ============ */
+.why{padding:150px 0; position:relative;}
+.why-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+.why-card h3{font-size:1.5rem; margin-bottom:14px; color:var(--bone);}
+.why-card p{color:var(--smoke); line-height:1.75; font-weight:300; font-size:1.02rem;}
+.why-card{padding-top:26px; border-top:1px solid var(--line);}
+.why-lede{
+  font-size:clamp(1.6rem,3.4vw,2.3rem); line-height:1.4; font-weight:300;
+  margin-bottom:70px; max-width:820px; color:var(--bone);
+}
+.why-lede b{color:var(--ember); font-weight:500; font-style:normal;}
+@media(max-width:760px){/* why-grid handled in main mobile block */}
+
+/* ============ FOOTER ============ */
+footer{
+  padding:90px 0 40px; border-top:1px solid var(--line);
+  background:linear-gradient(180deg, var(--ash-black), #000);
+}
+/* centred quote block */
+.foot-quote{
+  text-align:center;
+  padding-bottom:60px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:56px;
+}
+.foot-quote h2{
+  font-size:clamp(1.5rem,3.8vw,2.8rem);
+  line-height:1.2;
+  color:var(--bone);
+  letter-spacing:0.01em;
+}
+.foot-quote p{
+  margin-top:16px;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.72rem; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--ember);
+}
+/* 3-col row: quick links | spacer | connect */
+.foot-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:40px;
+  align-items:start;
+}
+.foot-col-head{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.65rem; letter-spacing:0.26em;
+  text-transform:uppercase; color:var(--ember);
+  margin-bottom:20px;
+}
+/* quick links */
+.foot-quicklinks{list-style:none; display:flex; flex-direction:column; gap:10px;}
+.foot-quicklinks a{
+  display:inline-flex; align-items:center; gap:10px;
+  color:var(--bone); text-decoration:none;
+  font-family:'Barlow Condensed',-apple-system,sans-serif;
+  font-size:1rem; font-weight:600; letter-spacing:0.05em;
+  text-transform:uppercase;
+  transition:color 0.25s, gap 0.25s;
+}
+.foot-quicklinks a:hover{color:var(--ember); gap:14px;}
+.foot-quicklinks a svg{
+  width:14px; height:14px; fill:currentColor;
+  opacity:0.6; flex-shrink:0;
+  transition:opacity 0.25s;
+}
+.foot-quicklinks a:hover svg{opacity:1;}
+/* social icons */
+.foot-social{display:flex; align-items:center; gap:14px;}
+.foot-social a{
+  display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px;
+  border:1px solid rgba(237,229,218,0.18);
+  border-radius:50%;
+  background:rgba(237,229,218,0.04);
+  color:var(--bone);
+  text-decoration:none;
+  transition:background 0.3s, border-color 0.3s, transform 0.25s;
+  flex-shrink:0;
+}
+.foot-social a:hover{
+  background:rgba(237,229,218,0.12);
+  border-color:rgba(237,229,218,0.6);
+  transform:translateY(-3px);
+}
+.foot-social a svg{width:18px; height:18px; fill:currentColor; display:block;}
+.foot-top{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:30px; margin-bottom:60px;}
+.foot-links{display:flex; gap:40px; flex-wrap:wrap;}
+.foot-links a{color:var(--smoke); text-decoration:none; font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;}
+.foot-links a:hover{color:var(--ember);}
+.foot-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; font-family:'JetBrains Mono','Courier New',monospace; font-size:0.68rem; color:var(--smoke); letter-spacing:0.06em; padding-top:24px; border-top:1px solid var(--line);}
+@media(max-width:720px){
+  /* footer handled in main mobile block below */
+}
+
+/* reveal animation */
+.reveal{opacity:0; transform:translateY(28px); transition:opacity 0.9s ease, transform 0.9s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+}
+
+/* ============================================================
+   MOBILE — single comprehensive breakpoint ≤ 720px
+   ============================================================ */
+@media(max-width:720px){
+
+  /* base */
+  .container{padding:0 18px;}
+
+  /* nav */
+  nav{padding:14px 18px;}
+  .nav-mark{font-size:0.65rem;}
+
+  /* hero */
+  .hero{min-height:100svh;}
+  .hero-body{padding:40px 18px 0;}
+  .hero-title{font-size:clamp(3rem,16vw,5.5rem); line-height:0.88;}
+  .hero-sub{font-size:0.75rem; gap:8px 16px;}
+  .scroll-cue{margin:22px 0 0;}
+  .tiger-mark{width:min(90vw,360px);}
+  .marquee-track span{font-size:clamp(1.2rem,6vw,2rem); padding:0 1.2rem;}
+
+  /* story */
+  .story{padding:80px 0 60px;}
+  .story-grid{grid-template-columns:1fr; gap:28px;}
+  .story-figure{position:relative; top:0; aspect-ratio:4/3;}
+  .story-copy p{font-size:1rem; line-height:1.7;}
+  .story-copy p:first-of-type::first-letter{font-size:3rem; line-height:0.8;}
+  .sec-head{margin-bottom:32px;}
+  .sec-head h2{font-size:clamp(1.8rem,8vw,2.8rem);}
+
+  /* setlist */
+  .setlist{padding:70px 0;}
+  .set-item{
+    grid-template-columns:36px 1fr;
+    grid-template-rows:auto auto;
+    gap:4px 10px; padding:12px 4px;
+  }
+  /* song name full width, tag wraps below it in same cell */
+  .set-num{
+    grid-column:1; grid-row:1 / span 2;
+    align-self:center;
+    font-size:0.72rem;
+  }
+  .set-name{
+    grid-column:2; grid-row:1;
+    font-size:1rem;
+  }
+  .set-tag{
+    display:block;
+    grid-column:2; grid-row:2;
+    font-size:0.58rem; letter-spacing:0.08em;
+    opacity:0.55; margin-top:2px;
+    white-space:normal; text-align:left;
+  }
+  .set-item.interlude{padding:8px 10px;}
+  .set-item.interlude .set-name{font-size:0.65rem; letter-spacing:0.1em;}
+  .set-item.interlude .set-tag{display:block; font-size:0.58rem;}
+  .set-item.act-label .set-act{font-size:0.6rem; letter-spacing:0.15em;}
+
+  /* gallery */
+  .gallery{padding:70px 0;}
+  .gal-grid{
+    grid-template-columns:1fr 1fr;
+    grid-auto-rows:160px;
+    gap:8px;
+  }
+  .gal-tile:nth-child(1){grid-column:1 / span 2; grid-row:1 / span 1;}
+  .gal-tile:nth-child(2){grid-column:1 / span 1; grid-row:2 / span 1;}
+  .gal-tile:nth-child(3){grid-column:2 / span 1; grid-row:2 / span 1;}
+  .gal-tile:nth-child(4){grid-column:1 / span 1; grid-row:3 / span 1;}
+  .gal-tile:nth-child(5){grid-column:2 / span 1; grid-row:3 / span 1;}
+  .gal-tile:nth-child(4) img{object-position:center 55%;}
+  .gal-tile:nth-child(5) img{object-position:center 60%;}
+  /* captions always visible on touch */
+  .gal-tile span{opacity:1; transform:translateY(0);}
+  .gal-tile span{font-size:0.58rem;}
+  .gal-credit{font-size:0.5rem;}
+
+  /* memories */
+  .memories{padding:70px 0;}
+  .mem-wall{columns:1; column-gap:0;}
+  .mem-card{margin-bottom:12px; padding:20px 16px;}
+  .mem-card p{font-size:0.95rem;}
+
+  /* why */
+  .why{padding:80px 0;}
+  .why-grid{grid-template-columns:1fr; gap:28px;}
+  .why-lede{font-size:clamp(1.2rem,4.5vw,1.6rem); margin-bottom:40px;}
+  .why-card h3{font-size:1.2rem;}
+  .why-card p{font-size:0.95rem;}
+
+  /* footer */
+  footer{padding:60px 0 32px;}
+  .foot-quote{padding-bottom:40px; margin-bottom:36px;}
+  .foot-quote h2{font-size:clamp(1.2rem,5.5vw,1.8rem);}
+  .foot-cols{grid-template-columns:1fr 1fr; gap:32px;}
+  /* hide empty middle column on mobile */
+  .foot-cols > div:nth-child(2){display:none;}
+  .foot-col-head{font-size:0.6rem; margin-bottom:14px;}
+  .foot-quicklinks a{font-size:0.9rem;}
+  .foot-social{gap:10px;}
+  .foot-social a{width:38px; height:38px;}
+  .foot-social a svg{width:16px; height:16px;}
+  .foot-bottom{flex-direction:column; gap:8px; font-size:0.6rem; text-align:center;}
+}
+
+/* tablet tweaks — 721px to 900px */
+@media(min-width:721px) and (max-width:900px){
+  .container{padding:0 24px;}
+  .story{padding:100px 0 80px;}
+  .setlist{padding:90px 0;}
+  .gallery{padding:90px 0;}
+  .gal-grid{grid-template-columns:repeat(6,1fr); grid-auto-rows:180px; gap:10px;}
+  .gal-tile:nth-child(1){grid-column:1/span 3; grid-row:1/span 2;}
+  .gal-tile:nth-child(2){grid-column:4/span 3; grid-row:1/span 1;}
+  .gal-tile:nth-child(3){grid-column:4/span 3; grid-row:2/span 1;}
+  .gal-tile:nth-child(4){grid-column:1/span 3; grid-row:3/span 2;}
+  .gal-tile:nth-child(5){grid-column:4/span 3; grid-row:3/span 2;}
+  .mem-wall{columns:2 200px;}
+  .why-grid{grid-template-columns:1fr 1fr; gap:36px;}
+  .foot-cols{grid-template-columns:1fr 1fr; gap:30px;}
+  .foot-cols > div:nth-child(2){display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">
+    <img src="images.jpg" alt="From Zero BLR logo" class="nav-logo">
+    FROM ZERO / BLR
+  </div>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#setlist">Setlist</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#memories">Memories</a></li>
+    <li><a href="#why">Why LP</a></li>
+  </ul>
+  <!-- hamburger — mobile only -->
+  <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile full-screen drawer -->
+<div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation">
+  <!-- close button top-right -->
+  <button class="drawer-close" onclick="closeDrawer()" aria-label="Close menu">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <p class="drawer-brand">FROM ZERO / BLR · 23.01.2026</p>
+  <ul>
+    <li><a href="#story"    onclick="closeDrawer()">Story</a></li>
+    <li><a href="#setlist"  onclick="closeDrawer()">Setlist</a></li>
+    <li><a href="#gallery"  onclick="closeDrawer()">Gallery</a></li>
+    <li><a href="#memories" onclick="closeDrawer()">Memories</a></li>
+    <li><a href="#why"      onclick="closeDrawer()">Why LP</a></li>
+  </ul>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="tiger-mark">
+    <img src="tiger_white.png" alt="" aria-hidden="true" style="width:100%;display:block;">
+  </div>
+  <div class="hero-glow"></div>
+  <div class="hero-body">
+    <span class="eyebrow">23.01.2026 — BRIGADE INNOVATION GARDENS</span>
+    <span class="eyebrow">BENGALURU</span>
+    <h1 class="hero-title">FROM<br>ZERO</h1>
+    <div class="hero-sub">
+      <span><b>Linkin Park</b> live</span>
+      <span>with <b>Bloodywood</b></span>
+      <span>The Roar finaly reached <b>India</b></span>
+    </div>
+    <div class="scroll-cue"><div class="bar"></div>SCROLL</div>
+  </div>
+  <div class="marquee-row">
+    <div class="marquee-track">
+      <span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span>
+      <span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span>
+      <span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span>
+      <span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span><span>FROM ZERO WORLD TOUR</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STORY ============ -->
+<section class="story" id="story">
+  <div class="container story-grid">
+    <div class="story-figure reveal">
+      <img src="ith.jpg" alt="In the end it really did matter — Brigade Innovation Gardens, Bengaluru 23 Jan 2026">
+    </div>
+    <div class="story-copy">
+      <span class="eyebrow reveal">The Night</span>
+      <h2 class="reveal" style="margin:14px 0 30px; font-size:clamp(2rem,4vw,3rem);">Dear Linkin Park,</h2>
+      <p class="reveal">I reached Brigade Innovation Gardens and felt a rush of disbelief and joy. Everywhere I looked, people wore Linkin Park shirts and every face held the same stunned, happy excitement. Many had waited more than twenty years to see Linkin Park perform in India for the first time. The air hummed with hope and quiet awe.
+
+Bloodywood opened the night at 6:20. They thanked Linkin Park for inspiring them and stood on stage grateful for the chance to play. Their energy warmed the crowd as the evening settled into a chilly darkness.</p>
+      <p class="reveal">By 7:50 the breeze was cold and the whole place buzzed with nervous, joyful waiting. People chanted "Linkin Park", "Chester", "Emily", voices rising and falling like waves. We started singing "In the End", "Numb" and the sound spread until it felt like one single, giant heartbeat.
+
+Then the countdown began. Screams filled the night as the intro to "Burn It Down" kicked in. That first chord sent shivers through everyone. When "Somewhere I Belong" started, I couldn’t hold back my tears. In that moment, thousands of strangers were no longer strangers. We shared one feeling, one dream held together by the music.</p>
+      <p class="reveal">After Chester’s passing, I never thought I would see Linkin Park live. But they chose to keep going, to stay together and carry forward what mattered most. That dedication, their bond and friendship moved me more deeply than I can say. The night became one of the most unforgettable experiences of my life.
+
+</p>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ============ SETLIST ============ -->
+<section class="setlist" id="setlist">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Setlist</span>
+      <h2>What they played</h2>
+      
+    </div>
+    <ul class="set-list">
+
+      <!-- PRE-SHOW -->
+      <li class="set-item preshow reveal"><span class="set-num">—</span><span class="set-name">Thank U</span><span class="set-tag">Alanis Morissette · Pre-show / Countdown</span></li>
+
+      <!-- ACT I -->
+      <li class="set-item act-label"><span class="set-act">ACT I</span></li>
+      <li class="set-item interlude reveal"><span class="set-name">Set Intro C</span><span class="set-tag">(Burn It Down)</span></li>
+      <li class="set-item reveal"><span class="set-num">01</span><span class="set-name">Somewhere I Belong</span><span class="set-tag">Meteora</span></li>
+      <li class="set-item reveal"><span class="set-num">02</span><span class="set-name">Lying From You</span><span class="set-tag">Meteora</span></li>
+      <li class="set-item reveal"><span class="set-num">03</span><span class="set-name">Up From The Bottom</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">04</span><span class="set-name">New Divide</span><span class="set-tag">Single</span></li>
+      <li class="set-item reveal peak"><span class="set-num">05</span><span class="set-name">The Emptiness Machine</span><span class="set-tag">From Zero</span></li>
+
+      <!-- ACT II -->
+      <li class="set-item act-label"><span class="set-act">ACT II</span></li>
+      <li class="set-item interlude reveal"><span class="set-name">Creation Interlude C</span><span class="set-tag">(Burn It Down)</span></li>
+      <li class="set-item reveal"><span class="set-num">06</span><span class="set-name">The Catalyst</span><span class="set-tag">A Thousand Suns</span></li>
+      <li class="set-item reveal"><span class="set-num">07</span><span class="set-name">Burn It Down</span><span class="set-tag">Living Things</span></li>
+      <li class="set-item reveal peak"><span class="set-num">08</span><span class="set-name">Cut The Bridge</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">09</span><span class="set-name">Where'd You Go</span><span class="set-tag">Fort Minor · The Rising Tied</span></li>
+      <li class="set-item reveal"><span class="set-num">10</span><span class="set-name">Waiting For The End</span><span class="set-tag">A Thousand Suns</span></li>
+      <li class="set-item reveal"><span class="set-num">11</span><span class="set-name">Lies Greed Misery</span><span class="set-tag">Living Things</span></li>
+      <li class="set-item reveal"><span class="set-num">12</span><span class="set-name">Two Faced</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">13</span><span class="set-name">Joe Hahn Solo</span><span class="set-tag">w/ Colin</span></li>
+      <li class="set-item reveal"><span class="set-num">14</span><span class="set-name">When They Come For Me / Remember The Name</span><span class="set-tag">Mike Solo · Mashup</span></li>
+      <li class="set-item reveal peak"><span class="set-num">15</span><span class="set-name">IGYEIH</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">16</span><span class="set-name">One Step Closer</span><span class="set-tag">Hybrid Theory</span></li>
+
+      <!-- ACT III -->
+      <li class="set-item act-label"><span class="set-act">ACT III</span></li>
+      <li class="set-item interlude reveal"><span class="set-name">Collapse Transition</span><span class="set-tag"></span></li>
+      <li class="set-item reveal"><span class="set-num">17</span><span class="set-name">Lost</span><span class="set-tag">Meteora 20</span></li>
+      <li class="set-item reveal"><span class="set-num">18</span><span class="set-name">Good Things Go</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">19</span><span class="set-name">What I've Done</span><span class="set-tag">Minutes to Midnight</span></li>
+
+      <!-- ACT IV -->
+      <li class="set-item act-label"><span class="set-act">ACT IV</span></li>
+      <li class="set-item interlude reveal"><span class="set-name">Kintsugi Transition</span><span class="set-tag"></span></li>
+      <li class="set-item reveal"><span class="set-num">20</span><span class="set-name">Overflow</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">21</span><span class="set-name">Numb</span><span class="set-tag">Meteora</span></li>
+      <li class="set-item reveal"><span class="set-num">22</span><span class="set-name">Over Each Other</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">23</span><span class="set-name">In The End</span><span class="set-tag">Hybrid Theory · Stranger Things Intro</span></li>
+      <li class="set-item reveal"><span class="set-num">24</span><span class="set-name">Faint</span><span class="set-tag">Meteora</span></li>
+
+      <!-- ACT V / ENCORE -->
+      <li class="set-item act-label"><span class="set-act">ACT V</span></li>
+      <li class="set-item interlude reveal"><span class="set-name">ENCORE Intro C</span><span class="set-tag">(Burn It Down)</span></li>
+      <li class="set-item reveal"><span class="set-num">25</span><span class="set-name">Papercut</span><span class="set-tag">Hybrid Theory</span></li>
+      <li class="set-item reveal peak"><span class="set-num">26</span><span class="set-name">Heavy Is The Crown</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">27</span><span class="set-name">Bleed It Out</span><span class="set-tag">Minutes to Midnight</span></li>
+
+    </ul>
+    
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Gallery</span>
+      <h2>Frozen moments</h2>
+      <p>Not perfect photos — just the frames my shaking hands managed to catch between songs.</p>
+    </div>
+    <div class="gal-grid">
+      <div class="gal-tile reveal">
+        <img src="band_mem.jpg" alt="Band members on stage — Bengaluru">
+        <span>The band — Brigade Innovation Gardens</span>
+        <div class="gal-credit">📷 Photos by @radnomadvisuals / @amigoandco</div>
+      </div>
+      <div class="gal-tile reveal">
+        <img src="em_mike.jpg" alt="Emily Armstrong and Mike Shinoda">
+        <span>Emily & Mike</span>
+        <div class="gal-credit">📷 Photos by @radnomadvisuals / @amigoandco</div>
+      </div>
+      <div class="gal-tile reveal">
+        <img src="crowd.jpg" alt="Crowd at the concert">
+        <span>40,000 strong — Bengaluru</span>
+      </div>
+      <div class="gal-tile reveal">
+        <img src="mike_blue.jpg" alt="Mike Shinoda under blue lights">
+        <span>Mike — blue hour</span>
+      </div>
+      <div class="gal-tile reveal">
+        <img src="WID.jpg" alt="Concert stage wide shot">
+        <span>When it dropped</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEMORIES ============ -->
+<section class="memories" id="memories">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Memories Wall</span>
+      <h2>Memories That Stay With Me</h2>
+    </div>
+    <div class="mem-wall">
+      <div class="mem-card reveal"><span class="mtime">7:50 PM</span><p>The line moved and someone's playlist started leaking out of a speaker — Papercuts. Half the queue started singing before we'd even gotten through security.</p></div>
+      <div class="mem-card reveal"><span class="mtime">8:06 PM</span><p>Up From the Bottom was the new song and everyone was singing along. The crowd loved it, especially when they waited for the Mike's solo.</p></div>
+      <div class="mem-card reveal"><span class="mtime">8:08 PM</span><p>New Divide's intro gave everyone goosebumps, and the scene matched the song perfectly.</p></div>
+      <div class="mem-card reveal"><span class="mtime">8:18 PM</span><p>When the Catalyst intro began, there was a quiet pause as we all waited to sing 'Lift me up, Let me go'.</p></div>
+      <div class="mem-card reveal"><span class="mtime">8:31 PM</span><p>During 'Where'd You Go' and 'Waiting for the End' I was reminded of Chester. Those songs always make us emotional.</p></div>
+      <div class="mem-card reveal"><span class="mtime">9:14 PM</span><p>One song that felt nostalgic was 'What I've Done'. Hearing it brought back memories of watching Transformers.</p></div>
+      <div class="mem-card reveal"><span class="mtime">9:31 PM</span><p>In The End, closing. Fourty thousand people finishing Chester's lines for him. That's the part we were waiting to sing.</p></div>
+      <div class="mem-card reveal"><span class="mtime">9:34 PM</span><p>Faint made everyone go crazy. The whole crowd was dancing for this song</p></div>
+      <div class="mem-card reveal"><span class="mtime">9:48 PM</span><p>At last, 'Bleed It Out' was the final song. We were happy to be part of this, but also sad because nobody wanted to leave and everyone hoped for just one more song.</p></div>
+    </div>
+</section>
+
+<!-- ============ WHY LP MATTERS ============ -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Why This Band</span>
+      <h2>Why Linkin Park matters</h2>
+    </div>
+    <p class="why-lede reveal">I grew up with Linkin Park. Their songs were there for every late night worry, and every loud, messy feeling I couldn't explain. When I played them, the noise in my head found a place to go. "From Zero" didn't erase what I felt before, it made us connect with the band even more, and the legacy kept moving forward. That's why Linkin Park matters to me.</p>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <h3>The Music Never Talked Down</h3>
+        <p>It called out the anger, the numbness, the shame, pain, without pretending they were anything else. For many of us, it was the first time a song sounded exactly like our inner voice.</p>
+      </div>
+      <div class="why-card reveal">
+        <h3>The Songs That Never Left
+
+</h3>
+        <p>Twenty plus years on, Linkin Park can walk onto a stage anywhere in the world and thousands of people still know every word to a song from 2000. That's not just nostalgia, it's those songs still doing their job.</p>
+      </div>
+      <div class="why-card reveal">
+        <h3>A Legacy Carried Forward</h3>
+        <p>Chester Bennington's voice is still the one in my head. Watching this band choose to keep going, carefully, respectfully, is its own kind of tribute. We love every band member for keeping the music alive.</p>
+      </div>
+      <div class="why-card reveal">
+        <h3>The Music That Unites</h3>
+        <p>Linkin Park’s music brings people together. At concerts, strangers sing every line like old friends. Online, people share memories and playlists to grieve and celebrate together. The music turns personal pain into something we carry as a group, showing how songs can unite us when words alone can’t.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+
+    <!-- Centred quote -->
+    <div class="foot-quote">
+      <h2>"THE ONE THING THAT CAN'T BE DEFEATED IS LOVE"</h2>
+      <p>— Chester Bennington</p>
+    </div>
+
+    <!-- 3-col row -->
+    <div class="foot-cols">
+
+      <!-- Quick Links -->
+      <div>
+        <p class="foot-col-head">Quick Links</p>
+        <ul class="foot-quicklinks">
+          <li>
+            <a href="setlist.png" download="LP_Bengaluru_Setlist.png">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+              Setlist
+            </a>
+          </li>
+          <li>
+            <a href="poster.png" download="LP_Bengaluru_Poster.png">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+              Poster
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Middle spacer — intentionally empty for breathing room -->
+      <div></div>
+
+      <!-- Connect -->
+      <div>
+        <p class="foot-col-head">Connect</p>
+        <div class="foot-social">
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/sathvikacharyaa" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <!-- X / Twitter -->
+          <a href="https://www.twitter.com/sathvikacharyaa" target="_blank" rel="noopener" aria-label="X / Twitter">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.031 2.25H8.12l4.265 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- Website -->
+          <a href="https://sathvikacharyaa.vercel.app/" target="_blank" rel="noopener" aria-label="Website">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot-bottom" style="margin-top:56px;">
+      <span>© Sathvik Acharya</span>
+      <span>BENGALURU · 23 JAN 2026 · FROM ZERO WORLD TOUR</span>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  /* Reveal on scroll */
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay = (i%6)*0.07 + 's';
+    observer.observe(el);
+  });
+
+  /* Hamburger menu */
+  const burger  = document.getElementById('burger');
+  const drawer  = document.getElementById('mobileDrawer');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    burger.classList.add('open');
+    burger.setAttribute('aria-expanded','true');
+    document.body.classList.add('menu-open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    document.body.classList.remove('menu-open');
+  }
+  burger.addEventListener('click', function(){
+    drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+  /* close on Escape */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeDrawer();
+  });
+</script>
+
+</body>
+</html>
