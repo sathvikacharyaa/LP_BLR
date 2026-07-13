@@ -4,5 +4,5 @@ A responsive fan website documenting my experience of the Linkin Park From Zero 
 
 ### 🔗 Live Website
 
-👉 **[Visit the Website](https://linkinparkbengaluru.vercel.app/)
+👉 **[Visit the Website](https://linkinparkbengaluru.vercel.app/)**
 
