@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Moments — From Zero Bengaluru 2026</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ash-black:#0b0908;
+  --char:#161210;
+  --ember:#ff5a2e;
+  --bone:#ede5da;
+  --smoke:#8f8378;
+  --blood:#b81c22;
+  --line:rgba(237,229,218,0.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ash-black);
+  color:var(--bone);
+  font-family:'Barlow',system-ui,sans-serif;
+  overflow-x:hidden;
+}
+::selection{background:var(--blood);color:var(--bone);}
+
+/* grain */
+body::before{
+  content:"";position:fixed;inset:0;z-index:999;
+  pointer-events:none;opacity:0.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* header */
+.gal-header{
+  padding:40px 32px 0;
+  max-width:1180px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;
+}
+.gal-back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--smoke);text-decoration:none;
+  transition:color 0.25s;
+}
+.gal-back:hover{color:var(--ember);}
+.gal-back svg{width:14px;height:14px;fill:currentColor;}
+.gal-title-block{text-align:right;}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;
+  color:var(--ember);display:block;margin-bottom:6px;
+}
+.gal-title-block h1{
+  font-family:'Helvetica Neue','Arial',sans-serif;
+  font-weight:700;font-size:clamp(1.8rem,4vw,3rem);
+  text-transform:uppercase;letter-spacing:0.02em;line-height:1;
+}
+
+/* container */
+.container{max-width:1180px;margin:0 auto;padding:60px 32px 100px;}
+
+/* section */
+.media-section{margin-bottom:80px;}
+.media-section-head{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:28px;padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.media-section-head h2{
+  font-family:'Helvetica Neue','Arial',sans-serif;
+  font-weight:700;font-size:1.4rem;text-transform:uppercase;letter-spacing:0.04em;
+}
+.media-section-head .count{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem;color:var(--smoke);letter-spacing:0.1em;
+}
+
+/* masonry-style grid — auto columns, natural height */
+.media-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+  gap:16px;
+  align-items:start;        /* key: each cell sizes to its content */
+}
+
+/* tile — height driven by media, not the container */
+.media-tile{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--char);
+  cursor:pointer;
+  transition:border-color 0.3s;
+  display:flex;flex-direction:column;
+}
+.media-tile:hover{border-color:rgba(255,90,46,0.4);}
+
+/* media fills width, height = natural aspect ratio */
+.media-tile img,
+.media-tile video{
+  width:100%;
+  height:auto;              /* natural height — portrait stays tall, landscape stays wide */
+  display:block;
+  transition:transform 0.6s ease;
+  max-height:70vh;          /* cap very tall portrait clips */
+  object-fit:cover;
+}
+.media-tile:hover img,
+.media-tile:hover video{transform:scale(1.03);}
+
+/* info bar below media */
+.media-tile-info{
+  padding:12px 14px 14px;
+  display:flex;flex-direction:column;gap:3px;
+  background:var(--char);
+  position:relative;z-index:2;
+}
+.media-tile-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--bone);
+}
+.media-tile-desc{
+  font-size:0.85rem;font-weight:300;color:var(--smoke);line-height:1.4;
+}
+
+/* video badge */
+.media-tile-badge{
+  position:absolute;top:10px;right:10px;z-index:3;
+  background:rgba(255,90,46,0.9);
+  padding:3px 8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:#fff;
+  display:flex;align-items:center;gap:5px;
+}
+.media-tile-badge svg{width:10px;height:10px;fill:#fff;}
+
+/* lightbox */
+.lb{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,0.96);backdrop-filter:blur(12px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.lb.open{display:flex;}
+.lb-inner{
+  position:relative;
+  max-width:min(960px,94vw);
+  max-height:90svh;
+  display:flex;align-items:center;justify-content:center;
+}
+.lb-inner img,.lb-inner video{
+  max-width:100%;
+  max-height:88svh;
+  object-fit:contain;
+  border:1px solid var(--line);
+  display:block;
+}
+.lb-close{
+  position:fixed;top:20px;right:20px;
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(237,229,218,0.06);
+  border:1px solid rgba(237,229,218,0.15);border-radius:50%;
+  cursor:pointer;
+  transition:background 0.25s,transform 0.25s;
+}
+.lb-close:hover{background:rgba(237,229,218,0.14);transform:rotate(90deg);}
+.lb-close svg{width:18px;height:18px;stroke:var(--bone);stroke-width:2;fill:none;stroke-linecap:round;}
+.lb-caption{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--smoke);
+  max-width:80vw;
+}
+
+/* contributor tag */
+.media-tile-contrib{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ember);margin-top:4px;
+  text-decoration:none;
+  transition:opacity 0.2s;
+}
+.media-tile-contrib:hover{opacity:0.75;}
+.media-tile-contrib svg{width:10px;height:10px;fill:currentColor;}
+
+/* footer */
+.gal-footer{
+  text-align:center;padding:40px 32px;
+  border-top:1px solid var(--line);
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem;letter-spacing:0.1em;color:var(--smoke);
+  line-height:2;
+}
+.gal-footer a{color:var(--ember);text-decoration:none;border-bottom:1px solid rgba(255,90,46,0.3);transition:border-color 0.2s;}
+.gal-footer a:hover{border-bottom-color:var(--ember);}
+.gal-footer .foot-divider{
+  display:block;width:40px;height:1px;
+  background:var(--line);margin:16px auto;
+}
+
+@media(max-width:600px){
+  .gal-header{padding:24px 18px 0;}
+  .container{padding:40px 18px 80px;}
+  .media-grid{grid-template-columns:1fr;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;}
+}
+</style>
+</head>
+<body>
+
+<header class="gal-header">
+  <a class="gal-back" href="index.html">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Back
+  </a>  <div class="gal-title-block">
+    <span class="eyebrow">From Zero · Bengaluru · 23 Jan 2026</span>
+    <h1>All Moments</h1>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- VIDEOS -->
+  <div class="media-section">
+    <div class="media-section-head">
+      <h2>Videos</h2>
+      <span class="count">13 clips</span>
+    </div>
+    <div class="media-grid">
+
+      <div class="media-tile" onclick="openLB('video','images/sib.mp4','Somewhere I Belong')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/sib.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Somewhere I Belong</span>
+          <span class="media-tile-desc">Everyone was just singing the lyrics, this was the first song of the night.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/iteb.mp4','In The End — Before the show')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/iteb.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">In The End</span>
+          <span class="media-tile-desc">We sang In The End before the show even began.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/numb.mp4','Numb — tribute to Chester')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/numb.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Numb</span>
+          <span class="media-tile-desc">I paid my tribute to Chester with this one.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/osc.mp4','One Step Closer — that intro')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/osc.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">One Step Closer</span>
+          <span class="media-tile-desc">This intro was just different. Pure chills.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/upftb.mp4','Up From The Bottom')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/upftb.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Up From The Bottom</span>
+          <span class="media-tile-desc">The FROM ZERO song, live for one of the first times ever.</span>
+          <a class="media-tile-contrib" href="https://youtube.com/@skynorcreation?si=NJW8bep1Gs8nydPr" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Captured by Sarang · @skynorcreation
+          </a>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/hitc.mp4','Heavy Is The Crown')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/hitc.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Heavy Is The Crown</span>
+          <span class="media-tile-desc">This is what we asked for</span>
+          <a class="media-tile-contrib" href="https://youtube.com/@skynorcreation?si=NJW8bep1Gs8nydPr" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Captured by Sarang · @skynorcreation
+          </a>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/newdivide.mp4','New Divide')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/newdivide.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">New Divide</span>
+          <span class="media-tile-desc">Those opening chords hit the whole crowd at once.</span>
+          <a class="media-tile-contrib" href="https://youtube.com/@skynorcreation?si=NJW8bep1Gs8nydPr" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Captured by Sarang · @skynorcreation
+          </a>
+        </div>
+      </div>
+
+      <!-- Manas's captures -->
+      <div class="media-tile" onclick="openLB('video','images/alex.mp4','Alex Riffs — Bleed It Out')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/alex.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Alex — Bleed It Out</span>
+          <span class="media-tile-desc">Alex riffs during Bleed It Out.</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/bleeditout_mike.mp4','Mike Rapping — Bleed It Out')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/bleeditout_mike.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Mike — Bleed It Out</span>
+          <span class="media-tile-desc">Mike's rapping at the last. Nobody wanted it to end.</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/overflow.mp4','Overflow')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/overflow.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Overflow</span>
+          <span class="media-tile-desc">To Overflow.</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/numb2.mp4','Numb — Always Has Our Hearts')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/numb2.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Numb</span>
+          <span class="media-tile-desc">Numb always has our hearts.</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/mike_verse.mp4','Mike\'s Verse — In The End')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/mike_verse.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Mike's Verse — In The End</span>
+          <span class="media-tile-desc">Mike's verse during In The End. Every single word.</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('video','images/ending.mp4','Heavy Is The Crown — Ending')">
+        <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
+        <video autoplay loop muted playsinline src="images/ending.mp4"></video>
+        <div class="media-tile-info">
+          <span class="media-tile-label">Heavy Is The Crown — Ending</span>
+          <span class="media-tile-desc">Heavy is the, Heavy is the Crown</span>
+          <span class="media-tile-contrib">Captured by Manas</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHOTOS -->
+  <div class="media-section">
+    <div class="media-section-head">
+      <h2>Photos</h2>
+      <span class="count">6 shots</span>
+    </div>
+    <div class="media-grid">
+
+      <div class="media-tile" onclick="openLB('img','images/band_mem.jpg','The band — Brigade Innovation Gardens')">
+        <img src="images/band_mem.jpg" alt="Band members on stage">
+        <div class="media-tile-info">
+          <span class="media-tile-label">The Band</span>
+          <span class="media-tile-desc">Brigade Innovation Gardens · 📷 @radnomadvisuals / @amigoandco</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('img','images/em_mike.jpg','Emily Armstrong and Mike Shinoda')">
+        <img src="images/em_mike.jpg" alt="Emily Armstrong and Mike Shinoda">
+        <div class="media-tile-info">
+          <span class="media-tile-label">Emily & Mike</span>
+          <span class="media-tile-desc">📷 @radnomadvisuals / @amigoandco</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('img','images/crowd.jpg','40,000 strong — Bengaluru')">
+        <img src="images/crowd.jpg" alt="Crowd at the concert">
+        <div class="media-tile-info">
+          <span class="media-tile-label">40,000 Strong</span>
+          <span class="media-tile-desc">Bengaluru showed up.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('img','images/mike_blue.jpg','Mike Shinoda under blue lights')">
+        <img src="images/mike_blue.jpg" alt="Mike Shinoda under blue lights">
+        <div class="media-tile-info">
+          <span class="media-tile-label">Mike Blue Hour</span>
+          <span class="media-tile-desc">That lighting hit different.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('img','images/WID.jpg','Concert stage wide shot')">
+        <img src="images/WID.jpg" alt="Concert stage wide shot">
+        <div class="media-tile-info">
+          <span class="media-tile-label">When It Dropped</span>
+          <span class="media-tile-desc">The stage, the lights, the moment.</span>
+        </div>
+      </div>
+
+      <div class="media-tile" onclick="openLB('img','images/ith.jpg','In The End — it really did matter')">
+        <img src="images/ith.jpg" alt="In the end it really did matter">
+        <div class="media-tile-info">
+          <span class="media-tile-label">In The End</span>
+          <span class="media-tile-desc">It really did matter.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <button class="lb-close" onclick="closeLB()" aria-label="Close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="lb-inner" id="lbInner"></div>
+  <p class="lb-caption" id="lbCaption"></p>
+</div>
+
+<footer class="gal-footer">
+  From Zero World Tour · Bengaluru · 23 Jan 2026
+</footer>
+
+<script>
+  const lb       = document.getElementById('lb');
+  const lbInner  = document.getElementById('lbInner');
+  const lbCaption= document.getElementById('lbCaption');
+
+  function openLB(type, src, caption){
+    lbInner.innerHTML = '';
+    if(type === 'video'){
+      const v = document.createElement('video');
+      v.src = src; v.controls = true; v.autoplay = true;
+      v.style.cssText = 'max-width:100%;max-height:88svh;display:block;';
+      lbInner.appendChild(v);
+    } else {
+      const img = document.createElement('img');
+      img.src = src; img.alt = caption;
+      lbInner.appendChild(img);
+    }
+    lbCaption.textContent = caption;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLB(){
+    lb.classList.remove('open');
+    lbInner.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  lb.addEventListener('click', e => { if(e.target === lb) closeLB(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLB(); });
+</script>
+</body>
+</html>

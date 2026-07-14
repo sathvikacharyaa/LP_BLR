@@ -245,6 +245,7 @@ nav{
 .mobile-drawer.open ul li:nth-child(3){animation-delay:0.15s;}
 .mobile-drawer.open ul li:nth-child(4){animation-delay:0.20s;}
 .mobile-drawer.open ul li:nth-child(5){animation-delay:0.25s;}
+.mobile-drawer.open ul li:nth-child(6){animation-delay:0.30s;}
 @keyframes drawerItem{
   from{opacity:0; transform:translateY(20px);}
   to{opacity:1; transform:translateY(0);}
@@ -559,6 +560,11 @@ nav{
   transition:transform 0.6s ease;
   display:block;
 }
+.gal-tile video{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  display:block;
+}
 .gal-tile:hover img{transform:scale(1.06);}
 .gal-tile::after{
   content:""; position:absolute; inset:0;
@@ -591,6 +597,29 @@ nav{
 @media(max-width:900px){
   /* gallery handled in main mobile/tablet blocks below */
 }
+
+/* view more button */
+.gal-more{
+  display:flex; justify-content:center;
+  margin-top:40px;
+}
+.gal-more-btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--bone); text-decoration:none;
+  border:1px solid rgba(237,229,218,0.25);
+  padding:12px 28px;
+  background:rgba(237,229,218,0.04);
+  transition:background 0.3s, border-color 0.3s, color 0.3s, gap 0.3s;
+}
+.gal-more-btn:hover{
+  background:rgba(255,90,46,0.1);
+  border-color:rgba(255,90,46,0.5);
+  color:var(--ember);
+  gap:14px;
+}
+.gal-more-btn svg{ width:14px; height:14px; fill:currentColor; flex-shrink:0; }
 
 /* ============ MEMORIES ============ */
 .memories{padding:130px 0; background:var(--char); border-top:1px solid var(--line);}
@@ -921,6 +950,7 @@ footer{
   grid-template-columns:1fr 1fr 1fr;
   gap:40px;
   align-items:start;
+  margin-top:56px;
 }
 .foot-col-head{
   font-family:'JetBrains Mono','Courier New',monospace;
@@ -947,6 +977,38 @@ footer{
 .foot-attribution a:hover{
   color:var(--bone);
   border-bottom-color:var(--bone);
+}
+
+/* credits block */
+.foot-credits{
+  margin-top:28px;
+  padding-top:24px;
+  border-top:1px solid var(--line);
+  margin-bottom:0;
+}
+.foot-credits-head{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.6rem; letter-spacing:0.26em; text-transform:uppercase;
+  color:var(--ember); margin-bottom:14px; display:block;
+}
+.foot-credits-list{
+  list-style:none;
+  display:flex; flex-direction:column; gap:8px;
+}
+.foot-credits-list li{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.65rem; letter-spacing:0.06em; line-height:1.7;
+  color:var(--smoke);
+}
+.foot-credits-list li a{
+  color:var(--smoke);
+  text-decoration:none;
+  border-bottom:1px solid rgba(143,131,120,0.3);
+  transition:color 0.25s, border-color 0.25s;
+}
+.foot-credits-list li a:hover{
+  color:var(--ember);
+  border-bottom-color:var(--ember);
 }
 
 /* quick links */
@@ -1154,6 +1216,7 @@ footer{
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#memories">Memories</a></li>
     <li><a href="#why">Why LP</a></li>
+    <li><a href="#keepsakes">Keepsakes</a></li>
   </ul>
   <!-- hamburger — mobile only -->
   <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
@@ -1174,6 +1237,7 @@ footer{
     <li><a href="#gallery"  onclick="closeDrawer()">Gallery</a></li>
     <li><a href="#memories" onclick="closeDrawer()">Memories</a></li>
     <li><a href="#why"      onclick="closeDrawer()">Why LP</a></li>
+    <li><a href="#keepsakes" onclick="closeDrawer()">Keepsakes</a></li>
   </ul>
 </div>
 
@@ -1315,7 +1379,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
     <div class="sec-head reveal">
       <span class="eyebrow">Gallery</span>
       <h2>Frozen moments</h2>
-      <p>Not perfect photos — just the frames my shaking hands managed to catch between songs.</p>
+      <p> Moments captured by every Linkin Park fan.</p>
     </div>
     <div class="gal-grid">
       <div class="gal-tile reveal">
@@ -1333,13 +1397,21 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         <span>40,000 strong — Bengaluru</span>
       </div>
       <div class="gal-tile reveal">
-        <img src="images/mike_blue.jpg" alt="Mike Shinoda under blue lights">
-        <span>Mike — blue hour</span>
+        <video autoplay loop muted playsinline>
+          <source src="images/sib.mp4" type="video/mp4">
+        </video>
+        <span>Somewhere I Belong everyone knew every word</span>
       </div>
       <div class="gal-tile reveal">
         <img src="images/WID.jpg" alt="Concert stage wide shot">
         <span>When it dropped</span>
       </div>
+    </div>
+    <div class="gal-more">
+      <a class="gal-more-btn" href="gallery.html">
+        <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+        View all moments
+      </a>
     </div>
   </div>
 </section>
@@ -1584,8 +1656,20 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
 
     <!-- Attribution -->
     <p class="foot-attribution">
-      Built with inspiration from <a href="https://www.lpsetlists.com" target="_blank" rel="noopener noreferrer">lpsetlists.com</a>
+      Inspired by <a href="https://www.lpsetlists.com" target="_blank" rel="noopener noreferrer">lpsetlists.com</a>
     </p>
+
+    <!-- Credits -->
+    <div class="foot-credits">
+      <span class="foot-credits-head">Credits</span>
+      <ul class="foot-credits-list">
+        <li>
+          Thanks to <a href="https://youtube.com/@skynorcreation?si=NJW8bep1Gs8nydPr" target="_blank" rel="noopener noreferrer">Sarang · @skynorcreation</a>,
+          Manas Shetty for sharing their moments from the show and making it feel so heartfelt and memorable.
+        </li>
+        
+      </ul>
+    </div>
 
     <!-- 3-col row -->
     <div class="foot-cols">
