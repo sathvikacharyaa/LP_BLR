@@ -499,11 +499,10 @@ nav{
 .bw-setlist{
   margin-top:56px; padding-top:40px;
   border-top:1px solid var(--line);
-  display:flex; flex-direction:column; align-items:center; gap:24px;
+  display:flex; flex-direction:column; gap:24px;
 }
 .bw-setlist-head{
-  text-align:center;
-  display:flex; flex-direction:column; align-items:center; gap:6px;
+  display:flex; flex-direction:column; gap:6px;
 }
 .bw-setlist-head .eyebrow{ color:var(--blood); }
 .bw-setlist-head h3{
@@ -511,19 +510,6 @@ nav{
   font-weight:700; font-size:clamp(1.2rem,2.5vw,1.6rem);
   text-transform:uppercase; letter-spacing:0.04em;
 }
-.bw-songs{
-  display:flex; flex-wrap:wrap; justify-content:center; gap:8px 12px;
-  max-width:600px;
-}
-.bw-songs span{
-  font-family:'JetBrains Mono','Courier New',monospace;
-  font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--smoke);
-  border:1px solid rgba(237,229,218,0.12);
-  padding:5px 12px;
-  transition:border-color 0.25s, color 0.25s;
-}
-.bw-songs span:hover{ color:var(--bone); border-color:rgba(237,229,218,0.3); }
 .set-item.interlude{
   grid-template-columns:1fr auto;
   background:rgba(255,90,46,0.04);
@@ -1406,17 +1392,21 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         <p style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;color:var(--smoke);margin-top:4px;">They set the stage on fire before LP even walked out</p>
       </div>
       <div class="bw-songs">
-        <span>Dana Dan</span>
-        <span>Nu Delhi</span>
-        <span>Aaj</span>
-        <span>Tadka</span>
-        <span>Jee Veerey</span>
-        <span>Bekhauf</span>
-        <span>Machi Bhasad</span>
-        <span>Halla Bol</span>
-        <span>Gaddaar</span>
+        <ul class="set-list">
+          <li class="set-item reveal"><span class="set-num">01</span><span class="set-name">Dana Dan</span><span class="set-tag">Rakshak</span></li>
+          <li class="set-item reveal"><span class="set-num">02</span><span class="set-name">Nu Delhi</span><span class="set-tag">Nu Delhi</span></li>
+          <li class="set-item reveal"><span class="set-num">03</span><span class="set-name">Aaj</span><span class="set-tag">Rakshak</span></li>
+          <li class="set-item reveal"><span class="set-num">04</span><span class="set-name">Tadka</span><span class="set-tag">Nu Delhi</span></li>
+          <li class="set-item reveal"><span class="set-num">05</span><span class="set-name">Jee Veerey</span><span class="set-tag">Rakshak</span></li>
+          <li class="set-item reveal"><span class="set-num">06</span><span class="set-name">Bekhauf</span><span class="set-tag">Single</span></li>
+          <li class="set-item reveal"><span class="set-num">07</span><span class="set-name">Machi Bhasad</span><span class="set-tag">Rakshak</span></li>
+          <li class="set-item reveal peak"><span class="set-num">08</span><span class="set-name">Halla Bol</span><span class="set-tag">Nu Delhi</span></li>
+          <li class="set-item reveal peak"><span class="set-num">09</span><span class="set-name">Gaddaar</span><span class="set-tag">Rakshak</span></li>
+        </ul>
       </div>
-      <div class="set-playlists-icons">
+      <div class="set-playlists" style="margin-top:0;padding-top:28px;border-top:none;align-items:center;">
+        <p class="set-playlists-label"><b>Listen to Bloodywood</b> on Spotify or YouTube Music</p>
+        <div class="set-playlists-icons">
         <!-- Spotify -->
         <a href="https://open.spotify.com/playlist/3OPWcaEt0o6KXpCMnfPhIH" target="_blank" rel="noopener noreferrer" aria-label="Bloodywood on Spotify">
           <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
@@ -1425,6 +1415,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         <a href="https://music.youtube.com/playlist?list=PLTVWBZ3JRrYM" target="_blank" rel="noopener noreferrer" aria-label="Bloodywood on YouTube Music">
           <img src="images/image.png" alt="YouTube Music" style="width:24px;height:24px;display:block;">
         </a>
+        </div>
       </div>
     </div>
 
